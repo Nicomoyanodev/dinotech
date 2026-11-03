@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DINOTECH · Juegos digitales y tarjetas</title>
+  <meta name="description" content="Juegos digitales para PS5, PS4 y PS3, PS Plus, tarjetas PSN, Roblox, Steam, Xbox y más. Pedí por WhatsApp. Av. Fuerza Aérea Argentina 1700, Córdoba.">
+  <meta name="theme-color" content="#000000">
+  <meta property="og:title" content="DINOTECH · Juegos digitales y tarjetas">
+  <meta property="og:description" content="Más de 3.000 juegos digitales PS5, PS4 y PS3. Pedí por WhatsApp.">
+  <link rel="icon" type="image/png" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23000%22%2F%3E%3Ctext%20x%3D%2232%22%20y%3D%2245%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2Csans-serif%22%20font-weight%3D%22900%22%20font-size%3D%2240%22%20fill%3D%22%23ff0000%22%3ED%3C%2Ftext%3E%3C%2Fsvg%3E">
+  <meta property="og:url" content="https://dinotech.ar/">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://dinotech.ar/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=63fd79c8">
+  <style>/* DINOTECH */
+  .logo-escrito { font: 800 30px/1 var(--display); letter-spacing: 3px; color: var(--text); width: auto; }
+  .logo-escrito b { color: var(--red); margin-left: 4px; }
+  .chooser-logo.logo-escrito { font-size: 42px; width: auto; margin: 0 auto 22px; text-shadow: 0 0 24px rgba(255, 0, 0, .45); filter: none; }
+  .foot-logo.logo-escrito { font-size: 22px; margin: 0 0 10px; }
+  @media (max-width: 640px) { .logo-text { display: inline; font-size: 16px; } .chooser-logo.logo-escrito { font-size: 32px; } }
+  .ph::before { display: none; }
+  .hero::after { display: none; }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="cuotas-strip" id="cuotasStrip"></div>
+    <div class="wrap top-row">
+      <a class="logo" href="#" aria-label="DINOTECH, inicio">
+        <span class="logo-text">DINO<b>TECH</b></span>
+      </a>
+      <label class="search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4a6 6 0 1 0 3.7 10.7l4.8 4.8 1.4-1.4-4.8-4.8A6 6 0 0 0 10 4Zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"/></svg>
+        <input id="q" type="search" placeholder="Buscar juego, tarjeta…" autocomplete="off">
+      </label>
+      <button class="cart-btn" id="cartBtn" aria-label="Ver mi pedido">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM3 2h2.3l.8 2H21l-3 9H7.5l-.9 2H19v2H5l2-4.2L4 4H3V2Z"/></svg>
+        <span class="badge" id="cartCount" hidden>0</span>
+      </button>
+    </div>
+    <div class="wrap mode-row">
+      <div class="mode-switch" role="tablist" aria-label="Tipo de juego">
+        <button class="mode-btn" data-mode="digital" role="tab">Digitales</button>
+        <button class="mode-btn" data-mode="fisico" role="tab">Físicos</button>
+      </div>
+    </div>
+    <nav class="wrap tabs" id="tabs" aria-label="Categorías"></nav>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" id="hero">
+      <div>
+        <div class="cuotas-badge" id="cuotasBadge"></div>
+        <h1 id="heroTitle">Juegos digitales <em>PS5 · PS4 · PS3</em> y tarjetas de saldo</h1>
+        <p id="heroText">Elegí lo que quieras, armá tu pedido y mandalo por WhatsApp. Te respondemos al toque.</p>
+      </div>
+      <a class="btn wa" id="heroWa" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3Z"/></svg>
+        Escribinos
+      </a>
+    </section>
+
+    <section id="howto" class="howto" hidden></section>
+
+    <div id="catalog">
+    <div class="search-head" id="searchHead" hidden>
+      <div class="search-head-row">
+        <p id="searchTitle"></p>
+        <button class="clear-q" id="clearQ">✕ Borrar</button>
+      </div>
+      <div id="searchHints"></div>
+    </div>
+    <div class="toolbar">
+      <div class="chips" id="chips"></div>
+      <select id="sort" aria-label="Ordenar">
+        <option value="rel">Destacados</option>
+        <option value="az">Nombre A-Z</option>
+        <option value="low">Menor precio</option>
+        <option value="high">Mayor precio</option>
+      </select>
+    </div>
+    <p class="count" id="count"></p>
+    <p class="notice" id="notice" hidden><b>Compra mínima: 10 cartuchos.</b> Podés combinar los títulos que quieras.</p>
+
+    <section id="promos" class="promos" hidden></section>
+    <section id="grid" class="grid" aria-live="polite"></section>
+    <section id="altDigital" class="alt-digital" hidden></section>
+    <div class="more"><button class="btn ghost" id="more" hidden>Ver más</button></div>
+    <p class="empty" id="empty" hidden>No encontramos nada con esa búsqueda. Probá con otro nombre o <a id="emptyWa" target="_blank" rel="noopener">consultanos por WhatsApp</a>.</p>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot-grid">
+      <div>
+        <p class="foot-logo logo-escrito">DINO<b>TECH</b></p>
+        <p>Av. Fuerza Aérea Argentina 1700<br>Córdoba Capital</p>
+      </div>
+      <div>
+        <p><a id="footWa" target="_blank" rel="noopener">WhatsApp +54 9 351 819-3051</a></p>
+        <p class="muted" id="updated"></p>
+        <p class="muted">Precios en pesos argentinos, sujetos a cambio sin previo aviso. Los productos digitales no tienen devolución.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Pantalla de inicio: elegir digitales o físicos -->
+  <div class="chooser" id="chooser" hidden>
+    <div class="chooser-inner">
+      <p class="chooser-logo logo-escrito">DINO<b>TECH</b></p>
+      <h1>¿Qué estás buscando?</h1>
+      <div class="chooser-options">
+        <button class="choice" data-mode="digital">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a1 1 0 0 1 1 1v9.6l3.3-3.3 1.4 1.4L12 17.4l-5.7-5.7 1.4-1.4 3.3 3.3V4a1 1 0 0 1 1-1ZM4 19h16v2H4v-2Z"/></svg>
+          <span class="choice-title">Juegos digitales</span>
+          <span class="choice-text">PS5 · PS4 · PS3, PS Plus y tarjetas de saldo. Te llegan por WhatsApp.</span>
+        </button>
+        <button class="choice" data-mode="fisico">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm0 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"/></svg>
+          <span class="choice-title">Juegos físicos</span>
+          <span class="choice-text">Usados para PS4. En el local.</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detalle de producto -->
+  <dialog id="detail" class="modal"></dialog>
+
+  <!-- Elegir juegos de una promo -->
+  <dialog id="promoDlg" class="modal wide"></dialog>
+
+  <!-- Carrito -->
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <h2>Mi pedido</h2>
+      <button class="icon" id="closeCart" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="drawer-body" id="cartItems"></div>
+    <div class="drawer-foot">
+      <p class="warn" id="cartWarn" hidden></p>
+      <div class="sent" id="sentBox" hidden>
+        <p><b>¡Pedido enviado!</b> Te respondemos por WhatsApp.</p>
+        <p class="muted">¿No se abrió WhatsApp? <a href="#" id="resend">Abrir de nuevo</a> · <a href="#" id="restore">Recuperar el pedido</a></p>
+      </div>
+      <div class="total"><span>Total</span><strong id="cartTotal">$0</strong></div>
+      <button class="btn wa block" id="sendOrder">Enviar pedido por WhatsApp</button>
+      <button class="btn ghost block" id="clearCart">Vaciar</button>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim" hidden></div>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="sucursal.js?v=77e7a95a"></script>
+  <script src="app.js?v=f9f35ab5"></script>
+</body>
+</html>

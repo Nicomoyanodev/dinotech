@@ -1,7 +1,4 @@
-# Tarea automática del repo "dinotech" (publica https://dinotech.ar en GitHub Pages).
-# El código está en el repo zona-gamer: acá solo se baja y se arma la web de DINOTECH
-# (digitales de zonagamer.app + físicos de la carpeta de Drive de DINOTECH).
-name: Actualizar DINOTECH
+name: Actualizar catálogo
 
 on:
   schedule:
@@ -12,7 +9,7 @@ on:
 
 permissions:
   actions: write
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -25,15 +22,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          repository: Nicomoyanodev/zona-gamer
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Armar la web de DINOTECH
-        run: node scripts/sucursal.js dinotech
+      - name: Bajar digitales y stock de físicos, buscar portadas y generar catálogo
+        run: node scripts/build.js
+      - name: Guardar portadas nuevas en el repo
+        run: |
+          git config user.name "dinotech-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/image-cache.json
+          git diff --cached --quiet || (git commit -m "Portadas nuevas [skip ci]" && git push)
       - name: Mantener activa la tarea automática
         # GitHub pausa las tareas programadas tras 60 días sin cambios en el repo.
         if: always()
@@ -43,7 +44,7 @@ jobs:
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: sitios/dinotech
+          path: public
   deploy:
     needs: build
     runs-on: ubuntu-latest

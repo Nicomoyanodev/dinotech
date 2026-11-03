@@ -1,0 +1,347 @@
+// Juegos físicos: lee los PDFs de stock de la carpeta de Google Drive (una subcarpeta por consola).
+const fs = require('fs');
+const path = require('path');
+
+// Carpeta de Drive con los PDFs de stock de DINOTECH
+const FOLDER_ID = '1Dw-Mqh0KuYTl1MyFzSBO_YaHNdZbqdQ5';
+const ROOT = path.join(__dirname, '..');
+
+const slug = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36';
+
+// fetch con reintentos y con el motivo real del error (en GitHub "fetch failed" no dice nada)
+async function get(url) {
+  let last;
+  for (let i = 0; i < 4; i++) {
+    try {
+      return await fetch(url, { redirect: 'follow', headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(30000) });
+    } catch (e) {
+      last = e;
+      await new Promise(r => setTimeout(r, 2000 * (i + 1)));
+    }
+  }
+  const cause = last && last.cause ? ` (${last.cause.code || ''} ${last.cause.message || last.cause})` : '';
+  throw new Error(`${last && last.message}${cause} en ${url.replace(/id=[\w-]+/, 'id=…')}`);
+}
+
+// Lista archivos y subcarpetas de una carpeta pública de Drive
+async function listFolder(id) {
+  const r = await get(`https://drive.google.com/embeddedfolderview?id=${id}`);
+  if (!r.ok) throw new Error(`Drive respondió ${r.status} al listar la carpeta`);
+  const html = await r.text();
+  const out = [];
+  const re = /<a href="https:\/\/drive\.google\.com\/(drive\/folders|file\/d)\/([\w-]+)[^"]*"[\s\S]*?<div class="flip-entry-title">([^<]*)<\/div>/g;
+  let m;
+  while ((m = re.exec(html))) out.push({ type: m[1] === 'file/d' ? 'file' : 'folder', id: m[2], name: m[3].trim() });
+  return out;
+}
+
+async function download(id) {
+  const r = await get(`https://drive.google.com/uc?export=download&id=${id}`);
+  const buf = new Uint8Array(await r.arrayBuffer());
+  if (!r.ok || String.fromCharCode(...buf.slice(0, 4)) !== '%PDF') throw new Error(`No se pudo bajar un PDF (HTTP ${r.status}, ${r.headers.get('content-type')})`);
+  return buf;
+}
+
+// Texto del PDF agrupado en renglones, de arriba hacia abajo
+async function pdfLines(data) {
+  const { getDocument } = await import('pdfjs-dist/legacy/build/pdf.mjs');
+  const doc = await getDocument({ data, verbosity: 0 }).promise;
+  const lines = [];
+  for (let p = 1; p <= doc.numPages; p++) {
+    const tc = await (await doc.getPage(p)).getTextContent();
+    const rows = new Map();
+    for (const it of tc.items) {
+      if (!it.str.trim()) continue;
+      const y = Math.round(it.transform[5]);
+      const key = [...rows.keys()].find(k => Math.abs(k - y) <= 2) ?? y;
+      if (!rows.has(key)) rows.set(key, []);
+      rows.get(key).push({ x: it.transform[4], s: it.str.trim() });
+    }
+    for (const y of [...rows.keys()].sort((a, b) => b - a)) lines.push(rows.get(y).sort((a, b) => a.x - b.x));
+  }
+  return lines;
+}
+
+const PLATFORMS = [
+  [/\bPS5\b/i, 'PS5'], [/\bPS4\b/i, 'PS4'], [/\bPS3\b/i, 'PS3'],
+  [/SWITCH|NINTENDO/i, 'Switch'], [/X\s?BOX\s?ONE/i, 'Xbox One'], [/X\s?BOX\s?360|\b360\b/i, 'Xbox 360'],
+];
+const platformOf = s => (PLATFORMS.find(([re]) => re.test(s)) || [, null])[1];
+
+// Errores de tipeo frecuentes en los listados del sistema (se corrigen en la web)
+const TYPOS = [
+  [/\bSainsts\b/i, 'Saints'], [/\bGlder\b/i, 'Elder'], [/\bHearths\b/i, 'Hearts'],
+  [/\bInjusticegods\b/i, 'Injustice Gods'], [/\bIn?mmortales\b|\bInmortals\b/i, 'Immortals'],
+  [/\bAssasins\b/i, 'Assassins'], [/\bValhal\b/i, 'Valhalla'], [/\bPersuit\b/i, 'Pursuit'],
+  [/\bNightrein\b/i, 'Nightreign'], [/\bLtimate\b/i, 'Ultimate'], [/\bWonderlans\b/i, 'Wonderlands'],
+  [/\bFootbal\b/i, 'Football'], [/\bFarcry\b/i, 'Far Cry'], [/\bTitan Fall\b/i, 'Titanfall'],
+  [/\bNBA ?2K ?(\d+)/i, 'NBA 2K$1'], [/\bPuyopuyo\b/i, 'Puyo Puyo'], [/\bMegaman\b/i, 'Mega Man'],
+  [/\bRockband\b/i, 'Rock Band'], [/\bLegacy Of Thief\b/i, 'Legacy of Thieves'], [/\bOg Rock\b/i, 'of Rock'],
+  [/\bResident Evil 8 Village\b/i, 'Resident Evil Village'], [/\bXenoverse XV\b/i, 'Xenoverse'],
+  [/\bParte 2\b/i, 'Part II'], [/\bDdj\b/i, ''], [/\bBlood Hound\b/i, 'Bloodhound'],
+  [/\bDestiny La Coleccion\b/i, 'Destiny The Collection'], [/\bEdicion Completo\b/i, 'Complete Edition'],
+  [/\bMarvel Avengers\b/i, "Marvel's Avengers"], [/\bTiger Woods PGA TOUR ?08\b/i, 'Tiger Woods PGA Tour 08'],
+  [/\bEdicion Especial (.+)$/i, '$1 Edición Especial'], [/\bStreet Fighters\b/i, 'Street Fighter'],
+  // Listado de DINOTECH
+  [/\bBandicool\b/i, 'Bandicoot'], [/\bTrylogy\b/i, 'Trilogy'], [/\bMasseffect\b/i, 'Mass Effect'],
+  [/\bMetal Gear Solidy\b/i, 'Metal Gear Solid V'], [/\bStrom\b/i, 'Storm'], [/\bSiarblood\b/i, 'Starblood'],
+  [/\bMount Blade War ?Band\b/i, 'Mount & Blade Warband'], [/\bThe Heavy Rain Y Beyond\b/i, 'Heavy Rain & Beyond Two Souls'],
+  [/\bNHL ?(\d+)/i, 'NHL $1'], [/\bMXGP ?(\d+)/i, 'MXGP $1'], [/\bTom Clancys\b/i, "Tom Clancy's"],
+];
+
+// "GRAN TURISMO 7 NUEVO SELLADO PS4" -> "Gran Turismo 7"
+function cleanName(raw) {
+  let out = titleCase(raw);
+  for (const [re, to] of TYPOS) out = out.replace(re, to);
+  return out.replace(/\s{2,}/g, ' ').trim();
+}
+
+function titleCase(raw) {
+  let s = raw
+    .replace(/\b(SELLADOS?|SELLADAS?|NUEVOS?|NUEVAS?|USADOS?|USADAS?|OUTLET|OULET|OLET|ORIGINAL|FISICO|FÍSICO)\b/gi, ' ')
+    .replace(/\bPS-?[345]\b/gi, ' ')
+    .replace(/\b(SX|SERIES\s?X)\b/gi, ' Series X ')
+    .replace(/\b(NINTENDO\s+SWITCH|NINTENDO|SWITCH|X\s?BOX\s?ONE\w*|X\s?BOX\s?360|XBOX|PS[345]|PLAYSTATION\s?[345]?)\b/gi, ' ')
+    .replace(/(\s|-)+(ONEE?|360)\s*$/i, ' ')
+    .replace(/\s+-\s*$/, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+  const keepUpper = /^(II|III|IV|VI|VII|VIII|IX|XI|XII|XIII|XV|XVI|FC|NBA|NFL|WWE|UFC|GTA|LEGO|FIFA|MLB|NHL|WRC|DLC|HD|VR|3DS|2K\d*|MX|GT|RE|COD|DC|TMNT|PGA|F1|UEFA|PES|NFS)$/;
+  return s.toLowerCase().replace(/[^\s:\-]+/g, w => {
+    const up = w.toUpperCase();
+    if (keepUpper.test(up) || /\d/.test(w)) return up;
+    return w.charAt(0).toUpperCase() + w.slice(1);
+  });
+}
+
+// Prefijo de dólares en el PDF: "u$s 145,93", "US$ 145", "USD 145"
+const USD_RE = /^(u\$s|us\$|usd|u\$d)\s*/i;
+const isUsd = t => USD_RE.test(String(t).trim());
+
+// "$ 45.990,00" / "45.990" / "45990,5" -> 45990 (formato argentino: punto = miles, coma = decimales)
+// Los importes en dólares ("u$s 145,93") conservan los centavos: se redondean recién al convertir a pesos.
+function parseMoney(t) {
+  const usd = isUsd(t);
+  const clean = String(t).trim().replace(USD_RE, '').replace(/[$\s]/g, '').replace(/^ARS/i, '');
+  if (!/^\d{1,3}(\.\d{3})*(,\d+)?$|^\d+(,\d+)?$/.test(clean)) return null;
+  const n = parseFloat(clean.replace(/\./g, '').replace(',', '.'));
+  if (!(n > 0)) return null;
+  return usd ? n : Math.round(n);
+}
+const isNumberish = t => /^(u\$s|us\$|usd|u\$d)?\s*\$?\s*\d[\d.,]*$/i.test(String(t).trim());
+
+// Recorre los renglones: nombre (1 o más líneas) + números (stock y, si existe, precio)
+// + línea de categoría "SONY - JUEGOS PS4 NUEVOS". Las columnas se ubican por el encabezado
+// ("Producto", "Precio", "Stock"); si el PDF no tiene columna de precio, el precio queda vacío.
+function parseLines(lines, { platform, condition, file }) {
+  const items = [];
+  let cols = { stock: 424 };          // posición x de cada columna (por defecto, el formato sin precios)
+  let name = [], stock = null, price = null, currency = 'ARS';
+  const isHeader = t => /Zona Gamer S\.A\.S|Av Duartes|Listado de Precios|Powered by|^\d+ \/ \d+$/i.test(t);
+
+  // A qué columna numérica pertenece una celda: la de encabezado más cercana en x
+  const columnOf = x => {
+    let best = null, dist = Infinity;
+    for (const [k, cx] of Object.entries(cols)) {
+      if (k === 'producto') continue;
+      const d = Math.abs(cx - x);
+      if (d < dist) { dist = d; best = k; }
+    }
+    return dist < 90 ? best : null;
+  };
+
+  for (const row of lines) {
+    const text = row.map(c => c.s).join(' ');
+    // Encabezado de la tabla: guarda dónde está cada columna
+    if (/^Producto\b/i.test(text)) {
+      cols = {};
+      for (const c of row) {
+        if (/producto/i.test(c.s)) cols.producto = c.x;
+        else if (/stock|cant/i.test(c.s)) cols.stock = c.x;
+        else if (/precio|final|p\.?\s?venta|importe|valor|contado|efectivo|lista/i.test(c.s) && cols.precio == null) cols.precio = c.x;
+      }
+      if (cols.stock == null) cols.stock = 424;
+      continue;
+    }
+    if (isHeader(text)) continue;
+    // Línea de categoría: "SONY - JUEGOS PS4 NUEVOS" o "SONY - Juego Usado Ps3"
+    if (/^[A-Z0-9ÁÉÍÓÚÑ ]+\s-\s*JUEGOS?\b/i.test(text)) {
+      if (name.length && stock > 0) {
+        const raw = name.join(' ');
+        const plat = /\b3DS\b/i.test(raw) ? '3DS' : platform;
+        items.push({
+          raw,
+          name: cleanName(raw),
+          platform: plat,
+          condition: /OUTLET|OULET/i.test(raw) ? 'Usado' : condition,
+          stock,
+          price,
+          currency: price != null ? currency : null,
+          file,
+        });
+      }
+      name = []; stock = null; price = null; currency = 'ARS';
+      continue;
+    }
+    for (const c of row) {
+      const col = isNumberish(c.s) ? columnOf(c.x) : null;
+      // Un "stock" de más de 500 unidades o con signo $ en realidad es un precio (columna con otro nombre)
+      const looksLikePrice = /\$/.test(c.s) || (parseMoney(c.s) || 0) > 500;
+      if (col === 'stock' && !looksLikePrice) stock = Math.round(parseFloat(c.s.replace(/[$\s.]/g, '').replace(',', '.')));
+      else if (col === 'stock' || col === 'precio') { price = parseMoney(c.s); currency = isUsd(c.s) ? 'USD' : 'ARS'; }
+      else name.push(c.s);
+    }
+  }
+  return items;
+}
+
+// Formato de listado de DINOTECH: un renglón por juego, "Stock | PS4 / USADO / NOMBRE | Alícuota | Final".
+// Las columnas se ubican por el encabezado; cada número va a la columna más cercana.
+function parseListado(lines, { platform, condition, file }) {
+  const items = [];
+  let cols = null;
+  for (const row of lines) {
+    const text = row.map(c => c.s).join(' ');
+    if (/\bProducto\b/i.test(text) && /\b(Stock|Cant)/i.test(text)) {
+      cols = {};
+      for (const c of row) {
+        if (/stock|cant/i.test(c.s)) cols.stock = c.x;
+        else if (/al[ií]cuota|iva/i.test(c.s)) cols.iva = c.x;
+        else if (/final|precio|importe/i.test(c.s)) cols.precio = c.x;
+      }
+      continue;
+    }
+    const prod = row.find(c => /\s\/\s/.test(c.s));
+    if (!cols || !prod) continue;
+    const columnOf = x => {
+      let best = null, dist = Infinity;
+      for (const [k, cx] of Object.entries(cols)) { const d = Math.abs(cx - x); if (d < dist) { dist = d; best = k; } }
+      return dist < 90 ? best : null;
+    };
+    let stock = null, price = null, currency = 'ARS';
+    for (const c of row) {
+      if (c === prod || !isNumberish(c.s)) continue;
+      const col = columnOf(c.x);
+      if (col === 'stock') stock = Math.round(parseFloat(c.s.replace(/[$\s.]/g, '').replace(',', '.')));
+      else if (col === 'precio') { price = parseMoney(c.s); currency = isUsd(c.s) ? 'USD' : 'ARS'; }
+    }
+    if (!(stock > 0)) continue;
+    // "PS4 / USADO / CRASH BANDICOOT" -> consola, estado y nombre
+    const parts = prod.s.split(/\s+\/\s+/);
+    const raw = parts.length >= 3 ? parts.slice(2).join(' ') : parts[parts.length - 1];
+    items.push({
+      raw: prod.s,
+      name: cleanName(raw),
+      platform: /\b3DS\b/i.test(prod.s) ? '3DS' : platformOf(parts[0]) || platform,
+      condition: parts.length >= 3 ? (/USAD|OUTLET/i.test(parts[1]) ? 'Usado' : 'Nuevo') : condition,
+      stock,
+      price,
+      currency: price != null ? currency : null,
+      file,
+    });
+  }
+  return items;
+}
+
+// Los precios en dólares del PDF se pasan a pesos con el dólar blue (venta) + USD_EXTRA pesos por dólar.
+const USD_EXTRA = 20;
+
+// Cotización del dólar blue (venta). Prueba dos APIs públicas; si las dos fallan, usa la última publicada en la web.
+async function getDolarBlue() {
+  const sources = [
+    ['https://dolarapi.com/v1/dolares/blue', j => j.venta],
+    ['https://api.bluelytics.com.ar/v2/latest', j => j.blue && j.blue.value_sell],
+  ];
+  for (const [url, pick] of sources) {
+    try {
+      const r = await get(url);
+      const venta = Number(pick(await r.json()));
+      if (r.ok && venta > 100) return { venta, extra: USD_EXTRA, fuente: new URL(url).host, fecha: new Date().toISOString() };
+    } catch {}
+  }
+  try {
+    const live = await (await get('https://zonagamer.app/data/catalogo.json')).json();
+    if (live.dolar && live.dolar.venta > 100) return { ...live.dolar, fuente: 'última cotización publicada' };
+  } catch {}
+  throw new Error('No se pudo obtener la cotización del dólar blue');
+}
+
+const usdToArs = (usd, dolar) => Math.round(usd * (dolar.venta + USD_EXTRA));
+
+// Un precio menor a esto en el PDF es un error de carga (ej. "$ 0,02" o "$ 8.067"): se muestra "Consultar precio"
+const MIN_PRICE = 15000;
+
+// Precio fijo del local para todos los juegos usados de PS4 (pisa el del PDF, que no trae precio)
+const PRECIO_FIJO = [{ platform: 'PS4', condition: 'Usado', price: 40000 }];
+function applyFixedPrices(list) {
+  for (const p of list) {
+    const rule = PRECIO_FIJO.find(r => r.platform === p.platform && r.condition === p.condition);
+    if (rule) { p.price = rule.price; delete p.priceUsd; p.oldPrice = null; }
+  }
+  return list;
+}
+
+// folderId: carpeta de Drive con una subcarpeta por consola, o con los PDFs sueltos
+// (en ese caso la consola sale del nombre del archivo, ej. "JUEGOS USADOS PS4.pdf").
+// fixedPrices: aplicar los precios fijos de PRECIO_FIJO (DINOTECH usa el precio del PDF).
+async function loadFisicos({ log = true, dolar = null, folderId = FOLDER_ID, fixedPrices = false } = {}) {
+  const top = await listFolder(folderId);
+  const folders = top.filter(x => x.type === 'folder');
+  const sueltos = top.filter(x => x.type === 'file' && /\.pdf$/i.test(x.name));
+  if (!folders.length && !sueltos.length) throw new Error('La carpeta de Drive de físicos está vacía o no es pública');
+  const groups = [];
+  for (const folder of folders) groups.push({ label: folder.name, platform: platformOf(folder.name), files: (await listFolder(folder.id)).filter(x => x.type === 'file') });
+  if (sueltos.length) groups.push({ label: 'Drive', platform: null, files: sueltos });
+  const all = [];
+  const needDolar = () => { if (!dolar) throw new Error('Hay precios en dólares pero no hay cotización del dólar blue'); return dolar; };
+  for (const folder of groups) {
+    for (const f of folder.files) {
+      const platform = folder.platform || platformOf(f.name) || folder.label;
+      const condition = /USAD/i.test(f.name) ? 'Usado' : 'Nuevo';
+      const lines = await pdfLines(await download(f.id));
+      let items = parseLines(lines, { platform, condition, file: f.name });
+      if (!items.length) items = parseListado(lines, { platform, condition, file: f.name });
+      for (const it of items) {
+        if (it.currency === 'USD') { it.priceUsd = it.price; it.price = usdToArs(it.price, needDolar()); }
+        if (it.price != null && it.price < MIN_PRICE) {
+          if (log) console.log(`    precio sospechoso ($${it.price}) en "${it.raw}": queda "Consultar precio"`);
+          it.price = null; delete it.priceUsd;
+        }
+      }
+      if (log) console.log(`  ${folder.label} / ${f.name}: ${items.length} juegos, ${items.filter(i => i.price).length} con precio (${items.filter(i => i.priceUsd).length} en dólares)`);
+      all.push(...items);
+    }
+  }
+  // Mismo juego repetido en el listado: se suman los stocks
+  const byId = new Map();
+  for (const it of all) {
+    const id = `fisico-${slug(it.platform)}-${slug(it.name)}-${slug(it.condition)}`;
+    if (byId.has(id)) { const prev = byId.get(id); prev.stock += it.stock; if (prev.price == null) { prev.price = it.price; if (it.priceUsd) prev.priceUsd = it.priceUsd; } continue; }
+    byId.set(id, {
+      id,
+      name: it.name,
+      platform: it.platform,
+      category: 'fisicos',
+      type: 'fisico',
+      condition: it.condition,
+      stock: it.stock,
+      price: it.price ?? null,
+      ...(it.priceUsd ? { priceUsd: it.priceUsd } : {}),
+      oldPrice: null,
+    });
+  }
+  return fixedPrices ? applyFixedPrices([...byId.values()]) : [...byId.values()];
+}
+
+module.exports = { loadFisicos, applyFixedPrices, getDolarBlue, usdToArs, USD_EXTRA, MIN_PRICE, cleanName, parseLines, parseListado, pdfLines, parseMoney };
+
+if (require.main === module) {
+  getDolarBlue().then(dolar => { console.log('Dólar blue:', dolar); return loadFisicos({ dolar }); }).then(list => {
+    const by = {};
+    for (const p of list) by[`${p.platform} ${p.condition}`] = (by[`${p.platform} ${p.condition}`] || 0) + 1;
+    console.log(list.length, 'juegos físicos', by);
+    console.log(list.filter((p, i) => i % 9 === 0 || p.priceUsd).map(p => `${p.platform} | ${p.condition} | ${p.stock} | ${p.name} | ${p.price ?? '-'}${p.priceUsd ? ` (u$s ${p.priceUsd})` : ''}`).join('\n'));
+  }).catch(e => { console.error(e); process.exit(1); });
+}

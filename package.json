@@ -1,0 +1,17 @@
+{
+  "name": "dinotech",
+  "version": "1.0.0",
+  "description": "Catálogo web de DINOTECH",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "actualizar": "node scripts/build.js",
+    "ver": "node scripts/serve.js",
+    "reintentar-portadas": "node scripts/build.js --reintentar",
+    "verificar-portadas": "node scripts/verificar-portadas.js"
+  },
+  "dependencies": {
+    "pdfjs-dist": "^4.10.38",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+  }
+}
