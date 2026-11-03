@@ -26,6 +26,6 @@ Arrancó como copia de la web de [Zona Gamer](https://github.com/Nicomoyanodev/z
 ## Cambiar cosas
 
 - **Nombre, WhatsApp, dirección:** `public/sucursal.js` y los textos de `public/index.html` (encabezado, pie y pantalla de inicio).
-- **Logo:** todavía es provisorio (el nombre escrito). El logo definitivo va en `public/img/`.
-- **Colores y diseño:** `public/styles.css` (por ahora igual al de Zona Gamer) y el bloque `<style>` del final del `<head>` en `public/index.html`.
+- **Logo:** `public/img/` (logo.png = logo completo, emblema.png = la "D" con el dinosaurio, favicon/apple-touch-icon = íconos, og.jpg = imagen al compartir). Salen del logo original `data/logo-original.jpg`.
+- **Colores y diseño:** `public/styles.css`. Colores del logo: verde #4ACF9A ("Dino"), violeta #7777EF ("Tech"), fondo gris cálido. Tipografías Outfit (títulos) e Inter (texto).
 - **Portada equivocada o faltante:** agregarla en `data/image-overrides.json`, por ejemplo `{ "Crash Bandicoot Trilogy": "https://link-a-la-imagen.jpg" }`.

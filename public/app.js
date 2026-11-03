@@ -82,9 +82,9 @@
 
   /* ---------- Imágenes ---------- */
   function placeholder(p) {
-    const colors = { PS5: 'linear-gradient(160deg,#2a0000,#050505)', PS4: 'linear-gradient(160deg,#1c1c1c,#050505)', PS3: 'linear-gradient(160deg,#141414,#000)', Sega: 'linear-gradient(160deg,#2a0000,#000)' };
+    const colors = { PS5: 'linear-gradient(160deg,#35305e,#1a1716)', PS4: 'linear-gradient(160deg,#1f3a4a,#1a1716)', PS3: 'linear-gradient(160deg,#332d2c,#1a1716)', Sega: 'linear-gradient(160deg,#1d4636,#1a1716)' };
     const icon = p.category === 'accesorios' ? '🎮 ' : '';
-    return `<div class="ph" style="--phbg:${colors[p.platform] || 'linear-gradient(160deg,#1a1a1a,#000)'}"><small>${esc(p.platform)}</small>${icon}${esc(p.name)}</div>`;
+    return `<div class="ph" style="--phbg:${colors[p.platform] || 'linear-gradient(160deg,#332d2c,#1a1716)'}"><small>${esc(p.platform)}</small>${icon}${esc(p.name)}</div>`;
   }
 
   function giftAmount(p) {

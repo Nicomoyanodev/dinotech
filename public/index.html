@@ -5,33 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DINOTECH · Juegos digitales y tarjetas</title>
   <meta name="description" content="Juegos digitales para PS5, PS4 y PS3, PS Plus, tarjetas PSN, Roblox, Steam, Xbox y más. Pedí por WhatsApp. Av. Fuerza Aérea Argentina 1700, Córdoba.">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#1a1716">
   <meta property="og:title" content="DINOTECH · Juegos digitales y tarjetas">
   <meta property="og:description" content="Más de 3.000 juegos digitales PS5, PS4 y PS3. Pedí por WhatsApp.">
-  <link rel="icon" type="image/png" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23000%22%2F%3E%3Ctext%20x%3D%2232%22%20y%3D%2245%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2Csans-serif%22%20font-weight%3D%22900%22%20font-size%3D%2240%22%20fill%3D%22%23ff0000%22%3ED%3C%2Ftext%3E%3C%2Fsvg%3E">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <meta property="og:image" content="https://dinotech.ar/img/og.jpg">
   <meta property="og:url" content="https://dinotech.ar/">
   <meta property="og:type" content="website">
   <link rel="canonical" href="https://dinotech.ar/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=63fd79c8">
-  <style>/* DINOTECH */
-  .logo-escrito { font: 800 30px/1 var(--display); letter-spacing: 3px; color: var(--text); width: auto; }
-  .logo-escrito b { color: var(--red); margin-left: 4px; }
-  .chooser-logo.logo-escrito { font-size: 42px; width: auto; margin: 0 auto 22px; text-shadow: 0 0 24px rgba(255, 0, 0, .45); filter: none; }
-  .foot-logo.logo-escrito { font-size: 22px; margin: 0 0 10px; }
-  @media (max-width: 640px) { .logo-text { display: inline; font-size: 16px; } .chooser-logo.logo-escrito { font-size: 32px; } }
-  .ph::before { display: none; }
-  .hero::after { display: none; }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=07e884ee">
 </head>
 <body>
   <header class="top">
     <div class="cuotas-strip" id="cuotasStrip"></div>
     <div class="wrap top-row">
       <a class="logo" href="#" aria-label="DINOTECH, inicio">
-        <span class="logo-text">DINO<b>TECH</b></span>
+        <img class="logo-full" src="img/logo.png" alt="DinoTech" width="327" height="72">
+        <img class="logo-mark" src="img/emblema.png" alt="" width="78" height="72">
       </a>
       <label class="search">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4a6 6 0 1 0 3.7 10.7l4.8 4.8 1.4-1.4-4.8-4.8A6 6 0 0 0 10 4Zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"/></svg>
@@ -97,7 +91,7 @@
   <footer class="foot">
     <div class="wrap foot-grid">
       <div>
-        <p class="foot-logo logo-escrito">DINO<b>TECH</b></p>
+        <img class="foot-logo" src="img/logo.png" alt="DinoTech" width="327" height="72">
         <p>Av. Fuerza Aérea Argentina 1700<br>Córdoba Capital</p>
       </div>
       <div>
@@ -111,7 +105,7 @@
   <!-- Pantalla de inicio: elegir digitales o físicos -->
   <div class="chooser" id="chooser" hidden>
     <div class="chooser-inner">
-      <p class="chooser-logo logo-escrito">DINO<b>TECH</b></p>
+      <img class="chooser-logo" src="img/logo.png" alt="DinoTech" width="327" height="72">
       <h1>¿Qué estás buscando?</h1>
       <div class="chooser-options">
         <button class="choice" data-mode="digital">
@@ -156,6 +150,6 @@
   <div class="toast" id="toast" role="status"></div>
 
   <script src="sucursal.js?v=77e7a95a"></script>
-  <script src="app.js?v=f9f35ab5"></script>
+  <script src="app.js?v=7e25eccc"></script>
 </body>
 </html>
