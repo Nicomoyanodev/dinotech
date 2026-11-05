@@ -10796,5 +10796,217 @@
  },
  "Paragon Esencial": null,
  "Pro Evolution Soccer 2017": null,
- "Pro Evolution Soccer 2019": null
+ "Pro Evolution Soccer 2019": null,
+ "FIFA2024": null,
+ "Star Wars Battlefront 2 Elite Trooper": {
+  "url": "https://upload.wikimedia.org/wikipedia/en/e/ea/StarWarsBattlefront2_PC.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "src": "wikipedia-en",
+  "match": "Star Wars: Battlefront II (2005 video game)"
+ },
+ "FIFA 2023": null,
+ "Black Blood 4": null,
+ "NHL 19": {
+  "url": "https://upload.wikimedia.org/wikipedia/en/1/10/NHL_19_cover.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "src": "wikipedia-en",
+  "match": "NHL 19"
+ },
+ "Shenmue 3": {
+  "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/878670/library_600x900.jpg",
+  "src": "steam",
+  "match": "Shenmue III"
+ },
+ "Star Wars Battlefront 2": {
+  "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1237950/library_600x900.jpg",
+  "src": "steam",
+  "match": "STAR WARS™ Battlefront™ II"
+ },
+ "Resident Evil Origings Collection": null,
+ "Sack Boy La Gran Aventura": null,
+ "2K25": {
+  "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2878960/library_600x900.jpg",
+  "src": "steam",
+  "match": "WWE 2K25"
+ },
+ "Street Fighter 30 Aniversary": null,
+ "FC2025": null,
+ "Street Fighter V Champion Edittion": null,
+ "FC2026": null,
+ "Ghostwire": {
+  "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1475810/library_600x900.jpg",
+  "src": "steam",
+  "match": "Ghostwire: Tokyo"
+ },
+ "Nioh Colection": null,
+ "Uncharted Coleccion Legado De Ladrones": null,
+ "Final Fantasy XVI": {
+  "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2515020/library_600x900.jpg",
+  "src": "steam",
+  "match": "FINAL FANTASY XVI"
+ },
+ "Silent Hill 2": {
+  "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2124490/library_600x900.jpg",
+  "src": "steam",
+  "match": "SILENT HILL 2"
+ },
+ "Death Loop": {
+  "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4986710/3dfb506786bb9e4a7ef0a97b564e0da774ba9989/header.jpg?t=1785890862",
+  "src": "steam",
+  "match": "Loop of Death",
+  "wide": true
+ },
+ "FC25": null,
+ "Inmortal Of Aveum": null,
+ "FC2027": null,
+ "Assassing Creed Valhala": null,
+ "Bowling": {
+  "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/898580/library_600x900.jpg",
+  "src": "steam",
+  "match": "Premium Bowling"
+ },
+ "Beyond Two Soulds": null,
+ "Assassins Creed Revelations": {
+  "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/201870/header.jpg?t=1739176298",
+  "src": "steam",
+  "match": "Assassin's Creed® Revelations",
+  "wide": true
+ },
+ "Assassins Creed III": {
+  "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/911400/header.jpg?t=1786631735",
+  "src": "steam",
+  "match": "Assassin's Creed® III Remastered",
+  "wide": true
+ },
+ "Brink": {
+  "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/22350/library_600x900.jpg",
+  "src": "steam",
+  "match": "BRINK"
+ },
+ "Brave": {
+  "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4653750/95885395d3c03d8bfad95e23067dbaf24f2d94ec/header.jpg?t=1793108272",
+  "src": "steam",
+  "match": "The Brave Few",
+  "wide": true
+ },
+ "Carnival Island": {
+  "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1290530/header.jpg?t=1591660093",
+  "src": "steam",
+  "match": "Paraiso Island Carnival Pack",
+  "wide": true
+ },
+ "Call Of Duty MW3": null,
+ "Final Fantasy XIII": {
+  "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/292120/library_600x900.jpg",
+  "src": "steam",
+  "match": "FINAL FANTASY® XIII"
+ },
+ "Child Of Eden": {
+  "url": "https://upload.wikimedia.org/wikipedia/en/3/3f/Child_of_Eden.jpeg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "src": "wikipedia-en",
+  "match": "Child of Eden"
+ },
+ "Crid 2": null,
+ "Grand Slam Tennis 2": {
+  "url": "https://upload.wikimedia.org/wikipedia/en/c/c5/Grand_Slam_Tennis_2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "src": "wikipedia-en",
+  "match": "Grand Slam Tennis 2"
+ },
+ "Infamous 2": {
+  "url": "https://upload.wikimedia.org/wikipedia/en/d/db/Infamous_2.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "src": "wikipedia-en",
+  "match": "Infamous 2"
+ },
+ "Killzone 2": null,
+ "Killzone 3": {
+  "url": "https://upload.wikimedia.org/wikipedia/en/9/91/Killzone_3.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "src": "wikipedia-en",
+  "match": "Killzone 3"
+ },
+ "Lost Planet": {
+  "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/6510/library_600x900.jpg",
+  "src": "steam",
+  "match": "Lost Planet™: Extreme Condition"
+ },
+ "Dangerous Hunts 2009": null,
+ "London 2012": {
+  "url": "https://upload.wikimedia.org/wikipedia/en/3/32/London_2012_cover_%28PAL_region%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "src": "wikipedia-en",
+  "match": "London 2012 (video game)"
+ },
+ "Madden 11": {
+  "url": "https://upload.wikimedia.org/wikipedia/en/4/4b/Madden_11_Drew_Brees_cover.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "src": "wikipedia-en",
+  "match": "Madden NFL 11"
+ },
+ "Medal Of Honor Warfigther": null,
+ "Mediaval Moves": null,
+ "Madden 12": {
+  "url": "https://upload.wikimedia.org/wikipedia/en/b/bc/Madden_12_official_cover.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "src": "wikipedia-en",
+  "match": "Madden NFL 12"
+ },
+ "Medieval Moves Y Sports Champions": null,
+ "MLB 12 The Show": null,
+ "Motor Storm Apocalypse": null,
+ "Mercenaries 2 World In Flames": null,
+ "NBA 2K12": null,
+ "NBA 2K13": {
+  "url": "https://upload.wikimedia.org/wikipedia/en/b/b9/NBA_2K13_Cover.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "src": "wikipedia-en",
+  "match": "NBA 2K13"
+ },
+ "Pro Evolution Soccer 2012": {
+  "url": "https://upload.wikimedia.org/wikipedia/en/a/a5/Pes2012cover.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "src": "wikipedia-en",
+  "match": "Pro Evolution Soccer 2012"
+ },
+ "NHL 12": null,
+ "Quantum Of Solace 007": {
+  "url": "https://upload.wikimedia.org/wikipedia/en/a/ab/Quantum_of_Solace_Cover_Art.PNG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "src": "wikipedia-en",
+  "match": "007: Quantum of Solace"
+ },
+ "Ratchet Clank All 4": {
+  "url": "https://upload.wikimedia.org/wikipedia/en/e/e5/Ratchet_and_Clank_All_4_One.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "src": "wikipedia-en",
+  "match": "Ratchet & Clank: All 4 One"
+ },
+ "Skate": {
+  "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3354750/79c5a87b61a396cc6e6b69e3a083727f175dea83/header.jpg?t=1788891347",
+  "src": "steam",
+  "match": "skate.",
+  "wide": true
+ },
+ "Ratchet Clank Full Games": {
+  "url": "https://upload.wikimedia.org/wikipedia/en/4/4f/Ratchet_%26_Clank_-_Full_Frontal_Assault.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "src": "wikipedia-en",
+  "match": "Ratchet & Clank: Full Frontal Assault"
+ },
+ "Resostamce 2": null,
+ "Sly Couper": null,
+ "Ssx": {
+  "url": "https://upload.wikimedia.org/wikipedia/en/b/b1/SSX2012VIDEOGAME.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "src": "wikipedia-en",
+  "match": "SSX (2012 video game)"
+ },
+ "The Club": {
+  "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/10460/library_600x900.jpg",
+  "src": "steam",
+  "match": "The Club™"
+ },
+ "Sports Champions": {
+  "url": "https://upload.wikimedia.org/wikipedia/en/9/9a/Sports_Champions.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "src": "wikipedia-en",
+  "match": "Sports Champions"
+ },
+ "TOPSPIN3": null,
+ "The Fight Lights Out": {
+  "url": "https://upload.wikimedia.org/wikipedia/en/c/c0/Motion_Fighter.PNG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "src": "wikipedia-en",
+  "match": "The Fight: Lights Out"
+ },
+ "Universe Disney": {
+  "url": "https://upload.wikimedia.org/wikipedia/en/b/b7/Disney-Universe.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "src": "wikipedia-en",
+  "match": "Disney Universe"
+ }
 }
